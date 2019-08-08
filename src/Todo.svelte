@@ -1,6 +1,6 @@
 <script>
   import TodoList from './TodoList.svelte'
-  export let todoItemAdded = []
+  export let todoItems = []
 
 </script>
 
@@ -20,8 +20,8 @@
         <h2 class="align-center">To-dos</h2>
     </div>
     <!-- <p>{todoItemAdded}</p> -->
-    {#if todoItemAdded.length !== 0}
-      {#each todoItemAdded as todoItem}
+    {#if todoItems.length !== 0}
+      {#each todoItems as todoItem}
          <TodoList todoItemAdded={todoItem}/>
       {/each}
     {/if}

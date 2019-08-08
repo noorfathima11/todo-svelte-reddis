@@ -17,7 +17,7 @@
   <div>
     <h2 class="align-center">Done</h2>
   </div>
-<!-- 
+<!--
   {#each doneItems.filter(item => item.done) as doneItem}
   <TodoList todoItemAdded = {doneItem}/>
   {/each} -->
