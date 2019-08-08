@@ -1,12 +1,14 @@
 <script>
   import TodoList from './TodoList.svelte'
+  export let todoItemAdded = []
+
 </script>
 
 <style>
   .main {
     float : left;
     width: 50%;
-    height: 100%;
+    min-height: 100%;
     background: peachpuff;
     border: solid;
   }
@@ -17,6 +19,13 @@
     <div>
         <h2 class="align-center">To-dos</h2>
     </div>
-    <TodoList />
+    <!-- <p>{todoItemAdded}</p> -->
+    {#if todoItemAdded.length !== 0}
+      {#each todoItemAdded as todoItem}
+         <TodoList todoItemAdded={todoItem}/>
+      {/each}
+    {/if}
+    <!--<TodoList todoItemAdded={todoItemAdded}-->
+
 </div>
 

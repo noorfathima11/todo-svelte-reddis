@@ -1,3 +1,10 @@
+<script>
+  export let todoItemAdded = ''
+
+  $: isDone = todoItemAdded.isDone
+
+</script>
+
 <style>
   .list{
     display: inline;
@@ -22,7 +29,9 @@
 </style>
 
 <div class="todolist">
-  <input type="checkbox" name="todo" class="list">
-  <p class="list">Todo will come here</p>
-  <button class="list"> X</button>
-</div>
+  <input type="checkbox" name="todo" class="list" bind:checked={todoItemAdded.isDone}>
+  <p class="list">{todoItemAdded.description} {todoItemAdded.isDone} </p>
+  <button class="list">X</button>
+</div> 
+
+
