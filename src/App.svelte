@@ -8,13 +8,14 @@
 
   let todosAdded = []
 
-  function update(todoAdded){
+  function updateStore(todoAdded){
     todoItems.update(value => {
         return value = [...value, todoAdded]
       })
   }
 
-  function setTodo(event){
+  function updateTodo(event){
+    console.log('coming to updateTodo')
     //console.log('event', event, event.code, event.target,)
     if(event.code === "Enter"){
       const todoAdded = {
@@ -22,7 +23,7 @@
         description: event.target.value,
         isDone: false
       }
-      update(todoAdded)
+      updateStore(todoAdded)
       console.log('store', $todoItems, $todoItems.length)
       todoItems.subscribe(value => {
         todosAdded = value
@@ -54,9 +55,9 @@ h2 {
 <p>Here {todosAdded}</p>
 
 <div class="align-center">
-  <input type="text" class="todoInput" placeholder="What needs to be done?" on:keydown={setTodo}>
+  <input type="text" class="todoInput" placeholder="What needs to be done?" on:keydown={updateTodo}>
 </div>
 
-<Todo todoItems={todosAdded} />
+<Todo taskItems={todosAdded} on:isDoneChange={updateTodo}/>
 
-<Done  />
+<Done taskItems={todosAdded} on:isDoneChange1={updateTodo}/>
