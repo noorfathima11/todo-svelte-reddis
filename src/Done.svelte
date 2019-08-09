@@ -19,8 +19,6 @@
   <div >
     <h2 class="align-center">Done</h2>
 
-    <p>Here again {i++}</p>
-
     {#if taskItems.length !== 0}
     {#each taskItems as taskItem}
        <DoneList todoItemAdded={taskItem}/>

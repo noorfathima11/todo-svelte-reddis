@@ -5,3 +5,6 @@ const app = new App({
 });
 
 export default app;
+
+//"start": "sirv public --single"
+//"sirv public --single --dev"

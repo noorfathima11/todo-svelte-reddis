@@ -9,16 +9,39 @@
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-svelte": "^5.0.3",
     "rollup-plugin-terser": "^4.0.4",
-    "svelte": "^3.0.0"
+    "svelte": "^3.0.0",
+    "nodemon": "^1.19.0"
   },
   "dependencies": {
+    "async": "^2.6.2",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "express-params": "0.0.3",
+    "express-validator": "^5.3.1",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
+    "redis": "^2.8.0",
     "sirv-cli": "^0.4.4"
   },
   "scripts": {
     "build": "rollup -c",
     "autobuild": "rollup -c -w",
     "dev": "run-p start:dev autobuild",
-    "start": "sirv public --single",
-    "start:dev": "sirv public --single --dev"
-  }
+    "start": "node ./bin/www",
+    "start:dev": "nodemon ./bin/www"
+  },
+  "description": "*Psst — looking for a shareable component template? Go here --> [sveltejs/component-template](https://github.com/sveltejs/component-template)*",
+  "main": "rollup.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/noorfathima11/todo-svelte-reddis.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/noorfathima11/todo-svelte-reddis/issues"
+  },
+  "homepage": "https://github.com/noorfathima11/todo-svelte-reddis#readme"
 }

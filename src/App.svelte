@@ -52,7 +52,7 @@ h2 {
    <h1>A simple To-do App</h1>
 </div>
 
-<p>Here {todosAdded}</p>
+<p>Example{todosAdded}</p>
 
 <div class="align-center">
   <input type="text" class="todoInput" placeholder="What needs to be done?" on:keydown={updateTodo}>
