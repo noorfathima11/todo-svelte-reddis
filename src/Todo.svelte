@@ -9,8 +9,13 @@
     float : left;
     width: 50%;
     min-height: 100%;
-    background: peachpuff;
+    /* opacity: 0.6; */
     border: solid;
+  }
+
+  .main p{
+    font-weight: bold;
+    color: white;
   }
 
 </style>

@@ -10,7 +10,7 @@
     name: 'Noor'
   }
   let fetchData = {
-    method : 'GET',
+    method : 'POST',
     body: data,
     headers: new Headers()
   }
@@ -34,7 +34,7 @@
       }
       updateStore(todoAdded)
       console.log('store', $todoItems, $todoItems.length)
-      fetch(url)
+      fetch(url, data)
       .then(function(response){
         response.text().then(function(text){
           console.log('text', text)
@@ -59,15 +59,16 @@ h2 {
   }
 
 	h1 {
-    color: purple;
-	}
+    color: black;
+  }
+
 </style>
 
 <div class="align-center">
    <h1>A simple To-do App</h1>
 </div>
 
-<p>Example{todosAdded}</p>
+<!-- <p>Example{todosAdded}</p> -->
 
 <div class="align-center">
   <input type="text" class="todoInput" placeholder="What needs to be done?" on:keydown={addTodoHandler}>

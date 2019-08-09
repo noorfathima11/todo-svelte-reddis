@@ -18,6 +18,7 @@
           console.log('store updated', value))
       }
     }
+    status = false
     dispatch('isDoneChange')
   }
 
@@ -35,36 +36,36 @@
   .todolist{
     border: solid;
     margin : 10px;
+    background: (0, 0, 0, 0.6);
   }
 
   input{
     margin: 10px;
+    height: 10px;
+    width: 10px;
   }
 
   button{
     margin: 10px;
+    font-size: 15px;
   }
 
   p{
+    font-weight: bold;
+    color: black;
     margin: 10px;
+    font-size: 15px;
   }
+
 </style>
 
 {#each $todoItems as todoItem}
   {#if todoItem.id === todoItemAdded.id && !todoItem.isDone}
     <div class="todolist">
       <input type="checkbox" name="todo" class="list" bind:checked={status} on:change={updateStore}>
-      <p class="list">{todoItemAdded.description} {todoItemAdded.isDone} </p>
-      <button class="list" on:click={() => remove(todoItem)}>X</button>
+      <p class="list">{todoItemAdded.description} </p>
+      <button class="list" on:click={() => remove(todoItem)}>x</button>
     </div>
   {/if}
 {/each}
-
-
-
-<!-- <div class="todolist">
-  <input type="checkbox" name="todo" class="list" bind:checked={status} on:change={updateStore}>
-  <p class="list">{todoItemAdded.description} {todoItemAdded.isDone} </p>
-  <button class="list">X</button>
-</div> -->
 
