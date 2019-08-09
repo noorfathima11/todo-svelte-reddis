@@ -1,11 +1,12 @@
 const redis = require('redis')
 
-let client = redis.createClient()
-client.on('connect', function() {
+let redisClient = redis.createClient()
+redisClient.on('connect', function() {
   console.log('Redis connected')
 })
 exports.taskAddPost = function(req,res) {
-  let task = req.body.task
+  let task = req.param.id
   console.log('task received', task)
   //client.hmset(task)
+  res.send('Hello World')
 }

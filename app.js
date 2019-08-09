@@ -5,29 +5,50 @@ const path = require('path')
 const logger = require('morgan')
 const bodyParser = require('body-parser')
 const redis = require('redis')
+const cors = require('cors')
 
 const indexRouter = require('./routes/all-routes')
-// const usersRouter = require('./routes/users')
-// const catalogRouter = require('./routes/catalog')
 
 const app = express()
 const router = express.Router()
 
+app.use(cors())
+
+app.use('/task', indexRouter)
+
+// view engine setup
+app.set('views', __dirname + '/public')
+app.set('view engine', 'html')
+
+
 // Create Redis Client
-let client = redis.createClient()
-client.on('connect', function() {
+let redisClient = redis.createClient()
+redisClient.on('connect', function() {
   console.log('Redis connected')
 })
+
+redisClient.set('kubra', '0')
+redisClient.incr('kubra')
 
 app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 //app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
+app.use('*.js', (req, res, next) => {
+  res.set('Content-Type', 'text/javascript')
+  next()
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404))
+})
+
+app.post('/task', (req,res) => {
+  console.log('request received')
+  console.log('req', req)
+  res.send('Hello world')
 })
 
 // error handler
@@ -40,6 +61,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500)
   res.render('error')
 })
-
 
 module.exports = app

@@ -5,6 +5,15 @@
   import InProgress from './InProgress.svelte'
   import TodoList from './TodoList.svelte'
 
+  const url = 'http://localhost:3000/task/add'
+  let data = {
+    name: 'Noor'
+  }
+  let fetchData = {
+    method : 'GET',
+    body: data,
+    headers: new Headers()
+  }
 
   let todosAdded = []
 
@@ -14,7 +23,7 @@
       })
   }
 
-  function updateTodo(event){
+  function addTodoHandler(event){
     console.log('coming to updateTodo')
     //console.log('event', event, event.code, event.target,)
     if(event.code === "Enter"){
@@ -25,6 +34,12 @@
       }
       updateStore(todoAdded)
       console.log('store', $todoItems, $todoItems.length)
+      fetch(url)
+      .then(function(response){
+        response.text().then(function(text){
+          console.log('text', text)
+        })
+      })
       todoItems.subscribe(value => {
         todosAdded = value
       })
@@ -55,9 +70,9 @@ h2 {
 <p>Example{todosAdded}</p>
 
 <div class="align-center">
-  <input type="text" class="todoInput" placeholder="What needs to be done?" on:keydown={updateTodo}>
+  <input type="text" class="todoInput" placeholder="What needs to be done?" on:keydown={addTodoHandler}>
 </div>
 
-<Todo taskItems={todosAdded} on:isDoneChange={updateTodo}/>
+<Todo taskItems={todosAdded} on:isDoneChange={addTodoHandler}/>
 
-<Done taskItems={todosAdded} on:isDoneChange1={updateTodo}/>
+<Done taskItems={todosAdded} on:isDoneChange1={addTodoHandler}/>
