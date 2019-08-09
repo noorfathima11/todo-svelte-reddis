@@ -1,6 +1,7 @@
 const createError = require('http-errors')
 const express = require('express')
 const path = require('path')
+const config = require('./config')
 // const cookieParser = require('cookie-parser') //
 const logger = require('morgan')
 const bodyParser = require('body-parser')
@@ -14,8 +15,8 @@ const app = express()
 const router = express.Router()
 
 // Create Redis Client
-let client = redis.createClient()
-client.on('connect', function() {
+let redisClient = redis.createClient()
+redisClient.on('connect', function() {
   console.log('Redis connected')
 })
 

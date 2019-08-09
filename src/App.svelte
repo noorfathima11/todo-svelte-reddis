@@ -14,7 +14,7 @@
       })
   }
 
-  function updateTodo(event){
+  function addTodoHandler(event){
     console.log('coming to updateTodo')
     //console.log('event', event, event.code, event.target,)
     if(event.code === "Enter"){
@@ -55,7 +55,7 @@ h2 {
 <p>Example{todosAdded}</p>
 
 <div class="align-center">
-  <input type="text" class="todoInput" placeholder="What needs to be done?" on:keydown={updateTodo}>
+  <input type="text" class="todoInput" placeholder="What needs to be done?" on:keydown={addTodoHandler}>
 </div>
 
 <Todo taskItems={todosAdded} on:isDoneChange={updateTodo}/>
