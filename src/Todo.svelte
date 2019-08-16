@@ -22,7 +22,7 @@
 
 <div class="main">
     <div>
-        <h2 class="align-center">To-dos</h2>
+        <h2 class="align-center">To-do ⌛</h2>
     </div>
     <!-- <p>{todoItemAdded}</p> -->
     {#if taskItems.length !== 0}

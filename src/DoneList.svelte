@@ -7,18 +7,15 @@
     const dispatch = createEventDispatcher()
 
     function updateStore(){
-      console.log("id1", todoItemAdded.id)
       todoItemAdded.isDone = status
       for(let i = 0; i < $todoItems.length; i++){
         if(todoItemAdded.id === $todoItems[i].id){
           $todoItems[i].isDone = status
-          console.log("elementid1", $todoItems[i].id, "todoid1", todoItemAdded.id, 'isdone1', $todoItems[i].isDone)
-          console.log('$todo1', $todoItems)
           todoItems.subscribe(value=>
             console.log('store updated1', value))
         }
       }
-      //dispatch('isDoneChange1')
+      dispatch('isDoneChange1')
       status = true
     }
 
@@ -48,8 +45,10 @@
     }
 
     button{
+      float: right;
       margin: 10px;
-      font-size: 15px;
+      width: 50px;
+      font-size: 7px;
     }
 
     p{
@@ -63,7 +62,7 @@
   {#each $todoItems as todoItem}
     {#if todoItem.id === todoItemAdded.id && todoItem.isDone}
       <div class="todolist">
-        <p>👍</p>
+        <p class="list">👍</p>
         <input type="checkbox" name="todo" class="list" bind:checked={status} on:change={updateStore}>
         <p class="list">{todoItemAdded.description} </p>
         <button class="list" on:click={() => remove(todoItem)}>X</button>

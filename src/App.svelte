@@ -5,14 +5,14 @@
   import InProgress from './InProgress.svelte'
   import TodoList from './TodoList.svelte'
 
+  //const request = new Request('http://localhost:3000/task/add')
   const url = 'http://localhost:3000/task/add'
-  let data = {
-    name: 'Noor'
-  }
-  let fetchData = {
+  let data = {}
+  let init = {
     method : 'POST',
-    body: data,
-    headers: new Headers()
+    body: JSON.stringify(data),
+    headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
+
   }
 
   let todosAdded = []
@@ -24,26 +24,28 @@
   }
 
   function addTodoHandler(event){
-    console.log('coming to updateTodo')
-    //console.log('event', event, event.code, event.target,)
     if(event.code === "Enter"){
       const todoAdded = {
         id: $todoItems.length + 1,
         description: event.target.value,
         isDone: false
       }
+
       updateStore(todoAdded)
-      console.log('store', $todoItems, $todoItems.length)
-      fetch(url, data)
+      init.body = JSON.stringify($todoItems)
+
+      fetch(url, init)
       .then(function(response){
-        response.text().then(function(text){
-          console.log('text', text)
+        response.text()
+        .then(function(text){
+          console.log('response text', text)
         })
       })
+
       todoItems.subscribe(value => {
         todosAdded = value
       })
-      event.target.value = ' '
+      event.target.value = ''
     }
   }
 </script>

@@ -17,7 +17,7 @@
   </style>
 
   <div >
-    <h2 class="align-center">Done</h2>
+    <h2 class="align-center">Done 👍</h2>
 
     {#if taskItems.length !== 0}
     {#each taskItems as taskItem}

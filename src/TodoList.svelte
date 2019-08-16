@@ -3,21 +3,44 @@
   import { createEventDispatcher } from 'svelte'
   export let todoItemAdded = ''
   let status = false
+  let id = 0
+  $: paramID = () => id;
+
+  $: url = `http://localhost:3000/task/isDone/:${paramID()}/update`
+  let data = {}
+
+  $: request = new Request(url, {
+    method : 'POST',
+    body: JSON.stringify(data),
+    headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
+  })
 
   const dispatch = createEventDispatcher()
 
   function updateStore(){
-    console.log("id", todoItemAdded.id)
+    console.log('updating store')
     todoItemAdded.isDone = status
+    id = todoItemAdded.id
+    console.log('paramID', paramID(), 'id', id)
     for(let i = 0; i < $todoItems.length; i++){
       if(todoItemAdded.id === $todoItems[i].id){
         $todoItems[i].isDone = status
-        console.log("elementid", $todoItems[i].id, "todoid", todoItemAdded.id, 'isdone', $todoItems[i].isDone)
-        console.log('$todo', $todoItems)
         todoItems.subscribe(value=>
           console.log('store updated', value))
       }
     }
+    data.todoItems = $todoItems
+    console.log('data', data)
+    console.log('URL', request.url)
+
+    fetch(request)
+      .then(function(response){
+        response.text()
+        .then(function(text){
+          console.log('response text', text)
+        })
+      })
+
     status = false
     dispatch('isDoneChange')
   }
@@ -46,8 +69,10 @@
   }
 
   button{
+    float: right;
     margin: 10px;
-    font-size: 15px;
+    width: 50px;
+    font-size: 7px;
   }
 
   p{
@@ -63,7 +88,7 @@
   {#if todoItem.id === todoItemAdded.id && !todoItem.isDone}
     <div class="todolist">
       <input type="checkbox" name="todo" class="list" bind:checked={status} on:change={updateStore}>
-      <p class="list">{todoItemAdded.description} </p>
+      <p contentEditable="true" class="list">{todoItemAdded.description} </p>
       <button class="list" on:click={() => remove(todoItem)}>x</button>
     </div>
   {/if}

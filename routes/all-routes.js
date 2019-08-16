@@ -4,10 +4,10 @@ const taskController = require('../controllers/task-controller')
 
 
 // POST request for adding a task
-router.get('/add', taskController.taskAddPost)
+router.post('/add', taskController.taskAddPost)
 
-// POST request for adding a task
-//router.post('/tasks/add', taskController.taskAddPost)
+// POST request for editing isDone field
+router.post('/isdone/:id/update', taskController.taskisDoneUpdate)
 
 module.exports = router
 
