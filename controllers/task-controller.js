@@ -5,7 +5,7 @@ redisClient.on('connect', function() {
   console.log('Redis connected')
 })
 
-exports.taskAddPost = function(req,res) {
+exports.taskAdd = function(req,res) {
   console.log('task received')
   console.log(req.body)
   let requestBody = req.body
@@ -17,12 +17,24 @@ exports.taskAddPost = function(req,res) {
     description = requestBody[i].description
     isDone = requestBody[i].isDone
     console.log(id, description, isDone)
-    redisClient.hmset(id, "description", description, "isDone", isDone)
+    redisClient.hmset(id, "description", description, "isDone", isDone, redis.print)
   }
   res.send('Added successfully')
 }
 
 exports.taskisDoneUpdate = function(req,res){
   console.log('task to update received')
+  let id = req.params.id
+  let isDone = req.body.isDone
+  console.log('id from param', id, isDone)
+  redisClient.hset(id, "isDone", true, redis.print)
+  res.send('task isDone updated')
+}
+
+exports.taskDelete = function(req, res){
+  console.log('task to delete received')
+  let id = req.params.id
+  console.log('id to delete', id)
+  res.send('task deleted')
 }
 

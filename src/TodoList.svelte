@@ -3,25 +3,24 @@
   import { createEventDispatcher } from 'svelte'
   export let todoItemAdded = ''
   let status = false
-  let id = 0
-  $: paramID = () => id;
-
-  $: url = `http://localhost:3000/task/isDone/:${paramID()}/update`
+  let url = ""
   let data = {}
-
-  $: request = new Request(url, {
-    method : 'POST',
-    body: JSON.stringify(data),
-    headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
-  })
 
   const dispatch = createEventDispatcher()
 
   function updateStore(){
     console.log('updating store')
+
     todoItemAdded.isDone = status
-    id = todoItemAdded.id
-    console.log('paramID', paramID(), 'id', id)
+
+    url = "http://localhost:3000/task/isDone/" + todoItemAdded.id + "/update"
+    data.isDone = status
+    let request = new Request(url, {
+      method : 'POST',
+      body: JSON.stringify(data),
+      headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
+    })
+
     for(let i = 0; i < $todoItems.length; i++){
       if(todoItemAdded.id === $todoItems[i].id){
         $todoItems[i].isDone = status
@@ -30,8 +29,6 @@
       }
     }
     data.todoItems = $todoItems
-    console.log('data', data)
-    console.log('URL', request.url)
 
     fetch(request)
       .then(function(response){
@@ -46,7 +43,20 @@
   }
 
   function remove(todo) {
-		  $todoItems = $todoItems.filter(task => task !== todo);
+      $todoItems = $todoItems.filter(task => task !== todo)
+      url = "http://localhost:3000/task/" + todoItemAdded.id + "/delete"
+      let request = new Request(url, {
+        method : 'DELETE',
+        headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
+      })
+
+      fetch(request)
+      .then(function(response){
+        response.text()
+        .then(function(text){
+          console.log('response text', text)
+        })
+      })
   }
 
 </script>
