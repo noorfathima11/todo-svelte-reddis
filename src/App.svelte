@@ -22,6 +22,7 @@
     })
   })
 
+
   const url = 'http://localhost:3000/task/add'
   let data = {}
   let init = {
@@ -30,34 +31,44 @@
     headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
   }
 
+  const addTask = async function(url, init){
+    return new Promise(async (resolve) => {
+      const task = await fetch(url, init)
+      const receivedAddedTask = await task.json()
+      console.log('task added', receivedAddedTask)
+      updateStore(receivedAddedTask)
+      console.log('updated store from db', $todoItems)
+      todoItems.subscribe(value => {
+        console.log('2')
+        todosAdded = value
+      })
+      resolve(receivedAddedTask)
+    })
+  }
+
   function updateStore(todoAdded){
     todoItems.update(value => {
+        console.log('1')
         return value = [...value, todoAdded]
       })
   }
 
   function addTodoHandler(event){
+    console.log('task to add received')
     if(event.code === "Enter"){
       const todoAdded = {
-        id: $todoItems.length + 1,
+        //id: $todoItems.length + 1,
         description: event.target.value,
         isDone: false
       }
 
-      updateStore(todoAdded)
-      init.body = JSON.stringify($todoItems)
-
-      fetch(url, init)
-      .then(function(response){
-        response.json()
-        .then(function(text){
-          console.log('response text', text)
-        })
-      })
-
-      todoItems.subscribe(value => {
-        todosAdded = value
-      })
+      init.body = JSON.stringify(todoAdded)
+      console.log('init body', init.body)
+      const getAddedtask = async function(){
+        let receiveAddedTask = await addTask(url, init)
+      }
+      console.log('updated store from db2', $todoItems)
+      getAddedtask()
       event.target.value = ''
     }
   }

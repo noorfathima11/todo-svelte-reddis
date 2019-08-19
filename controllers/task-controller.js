@@ -40,21 +40,41 @@ exports.taskGet = function(req, res){
 
 exports.taskAdd = function(req,res) {
   console.log('task received')
-  console.log(req.body)
+  console.log('request body', req.body)
   let requestBody = req.body
   let id = 0
   let description = ""
   let isDone = false
-  for (let i = 0; i < requestBody.length; i++){
-    id = requestBody[i].id
-    description = requestBody[i].description
-    isDone = requestBody[i].isDone
-    console.log(id, description, isDone)
+  const generateId = async function(){
+  console.log('came to generateId')
+    return new Promise((resolve) => {
+      redisClient.smembers('keyset', function(err, set){
+        console.log('set', set, typeof(set))
+        if(set.length === 0){
+          console.log('empty set', id)
+          resolve(1) }
+        else {
+          id = parseInt(set.pop())
+          console.log('id incremented', id + 1)
+          resolve(id + 1)
+        }
+      })
+    })
+  }
+
+  const getGeneratedId = async function(){
+    id = await generateId()
+    console.log('generated id', id)
+    description = requestBody.description
+    isDone = requestBody.isDone
+    console.log("to add", id, description, isDone)
     redisClient.sadd("keyset", id)
     redisClient.hmset(id, "description", description, "isDone", isDone, redis.print)
   }
-  //res.redirect('http://localhost:3000/task/getall')
-  res.send({"here" : "Added successfully"})
+
+  getGeneratedId()
+  res.redirect('http://localhost:3000/task/getall')
+  //res.send({"here" : "Added successfully"})
 }
 
 exports.taskisDoneUpdate = function(req,res){
