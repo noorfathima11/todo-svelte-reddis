@@ -58,6 +58,6 @@ h2 {
   <input type="text" class="todoInput" placeholder="What needs to be done?" on:keydown={addTodoHandler}>
 </div>
 
-<Todo taskItems={todosAdded} on:isDoneChange={updateTodo}/>
+<Todo taskItems={todosAdded} on:isDoneChange={addTodoHandler}/>
 
-<Done taskItems={todosAdded} on:isDoneChange1={updateTodo}/>
+<Done taskItems={todosAdded} on:isDoneChange1={addTodoHandler}/>
