@@ -5,6 +5,39 @@ redisClient.on('connect', function() {
   console.log('Redis connected')
 })
 
+exports.taskGet = function(req, res){
+  console.log('command received to get all values')
+
+  const fetchFromSet = async () => {
+    return new Promise((resolve) => {
+      redisClient.smembers("keyset", function(err, keys){
+        resolve(keys)
+      })
+    })
+  }
+
+  const fetchHashes = async (key) => {
+    return new Promise((resolve) => {
+      redisClient.hgetall(key, function(err, taskHash){
+        taskHash.id = parseInt(key)
+        resolve(taskHash)
+      })
+    })
+  }
+
+  const getAllTasks = async () => {
+    let fetchedKeys = await fetchFromSet()
+    console.log('fetchedkeys', fetchedKeys)
+    let fetchedHashes = []
+    for(let i = 0; i < fetchedKeys.length; i++){
+      fetchedHashes.push(await fetchHashes(fetchedKeys[i]))
+    }
+    console.log('fetchedhashes', fetchedHashes)
+    return res.send(fetchedHashes)
+  }
+  getAllTasks()
+}
+
 exports.taskAdd = function(req,res) {
   console.log('task received')
   console.log(req.body)
@@ -17,9 +50,11 @@ exports.taskAdd = function(req,res) {
     description = requestBody[i].description
     isDone = requestBody[i].isDone
     console.log(id, description, isDone)
+    redisClient.sadd("keyset", id)
     redisClient.hmset(id, "description", description, "isDone", isDone, redis.print)
   }
-  res.send('Added successfully')
+  //res.redirect('http://localhost:3000/task/getall')
+  res.send({"here" : "Added successfully"})
 }
 
 exports.taskisDoneUpdate = function(req,res){
@@ -35,6 +70,8 @@ exports.taskDelete = function(req, res){
   console.log('task to delete received')
   let id = req.params.id
   console.log('id to delete', id)
+  redisClient.srem("keyset", id, redis.print)
+  redisClient.del(id, redis.print)
   res.send('task deleted')
 }
 

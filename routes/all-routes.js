@@ -2,6 +2,8 @@ const express = require('express')
 const router = express.Router()
 const taskController = require('../controllers/task-controller')
 
+// GET request for retrieving all tasks
+router.get('/getall', taskController.taskGet)
 
 // POST request for adding a task
 router.post('/add', taskController.taskAdd)

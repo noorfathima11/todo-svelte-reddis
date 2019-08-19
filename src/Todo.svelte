@@ -30,7 +30,6 @@
          <TodoList todoItemAdded={taskItem}/>
       {/each}
     {/if}
-    <!--<TodoList todoItemAdded={todoItemAdded}-->
 
 </div>
 

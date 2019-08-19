@@ -3,7 +3,6 @@
     import { createEventDispatcher } from 'svelte'
     export let todoItemAdded = ''
     let status = true
-    let id = 0
     let url = ""
     let data = {}
 
@@ -47,6 +46,7 @@
         method : 'DELETE',
         headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
       })
+
       fetch(request)
       .then(function(response){
         response.text()
@@ -54,9 +54,7 @@
           console.log('response text', text)
         })
       })
-
     }
-
   </script>
 
   <style>
@@ -94,7 +92,7 @@
   </style>
 
   {#each $todoItems as todoItem}
-    {#if todoItem.id === todoItemAdded.id && todoItem.isDone}
+    {#if todoItem.id === todoItemAdded.id && todoItem.isDone === "true"}
       <div class="todolist">
         <p class="list">👍</p>
         <input type="checkbox" name="todo" class="list" bind:checked={status} on:change={updateStore}>

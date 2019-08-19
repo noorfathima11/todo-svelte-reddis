@@ -2,6 +2,7 @@
   import { todoItems } from './store.js'
   import { createEventDispatcher } from 'svelte'
   export let todoItemAdded = ''
+
   let status = false
   let url = ""
   let data = {}
@@ -95,7 +96,7 @@
 </style>
 
 {#each $todoItems as todoItem}
-  {#if todoItem.id === todoItemAdded.id && !todoItem.isDone}
+  {#if todoItem.id === todoItemAdded.id && todoItem.isDone === "false"}
     <div class="todolist">
       <input type="checkbox" name="todo" class="list" bind:checked={status} on:change={updateStore}>
       <p contentEditable="true" class="list">{todoItemAdded.description} </p>

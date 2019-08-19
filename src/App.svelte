@@ -2,20 +2,33 @@
   import { todoItems } from './store.js'
   import Todo from './Todo.svelte'
   import Done from './Done.svelte'
-  import InProgress from './InProgress.svelte'
+  //import InProgress from './InProgress.svelte'
   import TodoList from './TodoList.svelte'
+  import {onMount} from 'svelte'
 
-  //const request = new Request('http://localhost:3000/task/add')
+  let todosAdded = []
+
+  onMount(async () => {
+    const tasks = await fetch('http://localhost:3000/task/getall')
+    const tasksArray = await tasks.json()
+    console.log('all tasks received', tasksArray)
+    for(let i = 0; i < tasksArray.length; i++){
+      todoItems.update(value => {
+        return value = [...value, tasksArray[i]]
+      })
+    }
+    todoItems.subscribe(value => {
+        todosAdded = value
+    })
+  })
+
   const url = 'http://localhost:3000/task/add'
   let data = {}
   let init = {
     method : 'POST',
     body: JSON.stringify(data),
     headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
-
   }
-
-  let todosAdded = []
 
   function updateStore(todoAdded){
     todoItems.update(value => {
@@ -36,7 +49,7 @@
 
       fetch(url, init)
       .then(function(response){
-        response.text()
+        response.json()
         .then(function(text){
           console.log('response text', text)
         })
@@ -69,8 +82,6 @@ h2 {
 <div class="align-center">
    <h1>A simple To-do App</h1>
 </div>
-
-<!-- <p>Example{todosAdded}</p> -->
 
 <div class="align-center">
   <input type="text" class="todoInput" placeholder="What needs to be done?" on:keydown={addTodoHandler}>
